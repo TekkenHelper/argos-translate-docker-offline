@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  argos-api:
+    image: argos-translate:offline
+    build:
+      context: .
+      dockerfile: argos.Dockerfile
+    tty: true
+    stdin_open: true
+    ports:
+      - "55000:5000"
+    restart: always
