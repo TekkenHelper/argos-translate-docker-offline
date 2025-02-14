@@ -78,29 +78,21 @@
 
             const from = document.getElementById('from').value;
             const to = document.getElementById('to').value;
-            const content = document.getElementById('content').value;
+            const content = encodeURIComponent(document.getElementById('content').value);
 
-            // Send a POST request
-            fetch('http://localhost:55000/translate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    from: from,
-                    to: to,
-                    content: content
+            // Construct the GET request URL
+            const apiUrl = `/argos/translate?from=${from}&to=${to}&content=${content}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Access the "result" key in the response
+                    document.getElementById('translatedText').innerText = data.result;
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Access the "result" key in the response
-                document.getElementById('translatedText').innerText = data.result;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('translatedText').innerText = 'Translation failed. Please try again.';
-            });
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('translatedText').innerText = 'Translation failed. Please try again.';
+                });
         });
     </script>
 </body>
