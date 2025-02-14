@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import argostranslate.package
 import argostranslate.translate
 import os
+import json
 app = Flask(__name__)
 
 
@@ -24,6 +25,9 @@ def translate():
 
     # Perform the translation
     _result = argostranslate.translate.translate(_content, _from, _to)
+
+    # Escape special characters in the result to ensure valid JSON
+    _result_escaped = json.dumps(_result)  # This escapes quotes and other special characters
 
     # Prepare the JSON response
     _jsonRes = {"result": _result}
