@@ -78,10 +78,18 @@
 
             const from = document.getElementById('from').value;
             const to = document.getElementById('to').value;
-            const content = encodeURIComponent(document.getElementById('content').value);
+            const content = document.getElementById('content').value;
 
-            // Construct the GET request URL
-            const apiUrl = `/argos/translate?from=${from}&to=${to}&content=${content}`;
+            // Check if "from" and "to" languages are the same
+            if (from === to) {
+                // If they are the same, just set the translated text to the original content
+                document.getElementById('translatedText').innerText = content;
+                return; // Exit the function early
+            }
+
+            // If "from" and "to" are different, proceed with the API call
+            const encodedContent = encodeURIComponent(content);
+            const apiUrl = `/argos/translate?from=${from}&to=${to}&content=${encodedContent}`;
 
             fetch(apiUrl)
                 .then(response => response.json())
